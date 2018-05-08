@@ -8,7 +8,7 @@ import os
 __author__ = 'Ronald Osure (c) KENET 2018'
 
 def main():
-    zones_tmp = subprocess.check_output('ls /etc/bind/pri.*', shell=True)
+    zones_tmp = subprocess.check_output('ls /etc/bind/pri.* | grep -v err', shell=True)
     zones = zones_tmp.split('\n')
     zones.remove('')
     for zone in zones:
