@@ -8,13 +8,19 @@ import os
 __author__ = 'Ronald Osure (c) KENET 2018'
 
 def main():
-    zones_tmp = subprocess.check_output('ls /etc/bind/pri.* | grep -v err', shell=True)
+    zones_tmp = subprocess.check_output('ls /etc/bind/pri.*', shell=True)
     zones = zones_tmp.split('\n')
     zones.remove('')
     for zone in zones:
         zone_with_pri = os.path.split(zone)[1]
         domain = zone_with_pri.split('pri.')[1]
         print "DEBUG: processing %s" % domain
+
+        # Let us not bother with zones already having errors ie ending in .err
+        if zone.endswith('.err'):
+            print "WARNING: not checking %s, already has errors" % domain
+            continue
+
         # We are simply looking for a none zero exit status. That will mean that
         # named-checkzone failed
         try:
