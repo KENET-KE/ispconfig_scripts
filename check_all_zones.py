@@ -13,7 +13,7 @@ def main():
     zones.remove('')
     for zone in zones:
         zone_with_pri = os.path.split(zone)[1]
-        domain = zone_with_pri.split('pri.')[1]
+        domain = zone_with_pri[4:] # Remove pri. at beginning str
         print "DEBUG: processing %s" % domain
 
         # Let us not bother with zones already having errors ie ending in .err
@@ -21,7 +21,7 @@ def main():
             print "WARNING: not checking %s, already has errors" % domain
             continue
 
-        # We are simply looking for a none zero exit status. That will mean that
+        # We are simply looking for a non zero exit status. That will mean that
         # named-checkzone failed
         try:
             a = subprocess.check_output('named-checkzone %s %s' % (domain, zone), shell=True)
